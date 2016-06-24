@@ -47,17 +47,28 @@
 		/**
 		 * @param  FileUpload
 		 * @param  string|NULL
+		 * @param  array|string|NULL
 		 * @return string  filepath (namespace/file.ext)
 		 * @throws ImageStorageException
 		 */
-		public function upload(FileUpload $image, $namespace = NULL)
+		public function upload(FileUpload $image, $namespace = NULL, $mimeTypes = NULL)
 		{
 			if (!$image->isOk()) {
 				throw new ImageStorageException('File is broken');
 			}
 
 			if (!$image->isImage()) {
-				throw new ImageStorageException('File must be image, ' . $image->getContentType() . ' given');
+				$contentType = $image->getContentType();
+				$isValid = FALSE;
+
+				if (isset($mimeTypes)) {
+					$mimeTypes = is_array($mimeTypes) ? $mimeTypes : explode(',', $mimeTypes);
+					$isValid = in_array($contentType, $mimeTypes, TRUE);
+				}
+
+				if (!$isValid) {
+					throw new ImageStorageException('File must be image, ' . $contentType . ' given');
+				}
 			}
 
 			$name = NULL;
