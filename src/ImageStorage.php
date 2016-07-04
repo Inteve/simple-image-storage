@@ -6,6 +6,7 @@
 	use Nette\Http\FileUpload;
 	use Nette\Utils\FileSystem;
 	use Nette\Utils\Image;
+	use Nette\Utils\Random;
 	use Nette\Utils\Strings;
 
 
@@ -79,7 +80,7 @@
 			$sanitizedName = pathinfo($sanitizedName, PATHINFO_FILENAME) . '.' . Strings::lower($ext);
 
 			do {
-				$name = Strings::random(10) . '.' . $sanitizedName;
+				$name = Random::generate(10) . '.' . $sanitizedName;
 				$file = $this->formatFilePath($name, $namespace);
 				$path = $this->getPath($file);
 
