@@ -92,6 +92,44 @@
 
 
 		/**
+		 * @param  Image
+		 * @param  int
+		 * @param  int|NULL (for JPEG, PNG)
+		 * @param  string|NULL
+		 * @return string  filepath (namespace/file.ext)
+		 * @throws ImageStorageException
+		 */
+		public function save(Image $image, $format, $quality = NULL, $namespace = NULL)
+		{
+			$ext = NULL;
+
+			if ($format === Image::JPEG) {
+				$ext = 'jpg';
+
+			} elseif ($format === Image::PNG) {
+				$ext = 'png';
+
+			} elseif ($format === Image::GIF) {
+				$ext = 'gif';
+
+			} else {
+				throw new ImageStorageException("Unknow format '$format'.");
+			}
+
+			do {
+				$name = Random::generate(10) . '.' . Random::generate(5) . '.' . $ext;
+				$file = $this->formatFilePath($name, $namespace);
+				$path = $this->getPath($file);
+
+			} while (file_exists($path));
+
+			@mkdir(dirname($path), 0777, TRUE); // @ - adresar muze existovat
+			$image->save($path, $quality, $format);
+			return $file;
+		}
+
+
+		/**
 		 * @param  string  filepath (namespace/file.ext)
 		 * @return void
 		 */
