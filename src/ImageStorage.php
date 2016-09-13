@@ -143,8 +143,19 @@
 		/**
 		 * @param  string  filepath (namespace/file.ext)
 		 * @return string
+		 * @deprecated
 		 */
 		public function getPath($file)
+		{
+			return $this->getRealPath($file);
+		}
+
+
+		/**
+		 * @param  string  filepath (namespace/file.ext)
+		 * @return string
+		 */
+		public function getRealPath($file)
 		{
 			return $this->directory . '/' . $this->formatOriginalPath($file);
 		}
