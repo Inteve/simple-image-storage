@@ -179,6 +179,38 @@
 		 * @param  int|NULL
 		 * @return string
 		 */
+		public function getRealThumbnailPath($file, $width, $height, $flags = NULL, $quality = NULL)
+		{
+			$thumbnail = $this->prepareThumbnail($file, $width, $height, $flags, $quality);
+			$path = $this->formatThumbnailPath($file, $thumbnail);
+			return $this->directory . '/' . $path;
+		}
+
+
+		/**
+		 * @param  string  filepath (namespace/file.ext)
+		 * @param  int|NULL
+		 * @param  int|NULL
+		 * @param  int|NULL
+		 * @param  int|NULL
+		 * @return string
+		 */
+		public function getPublicThumbnailPath($file, $width, $height, $flags = NULL, $quality = NULL)
+		{
+			$thumbnail = $this->prepareThumbnail($file, $width, $height, $flags, $quality);
+			$path = $this->formatThumbnailPath($file, $thumbnail);
+			return $this->publicDirectory . '/' . $path;
+		}
+
+
+		/**
+		 * @param  string  filepath (namespace/file.ext)
+		 * @param  int|NULL
+		 * @param  int|NULL
+		 * @param  int|NULL
+		 * @param  int|NULL
+		 * @return string
+		 */
 		public function thumbnail($file, $width, $height, $flags = NULL, $quality = NULL)
 		{
 			$thumbnail = $this->prepareThumbnail($file, $width, $height, $flags, $quality);
