@@ -72,20 +72,12 @@
 				}
 			}
 
-			$name = NULL;
-			$path = NULL;
-			$file = NULL;
 			$sanitizedName = $image->getSanitizedName();
 			$ext = pathinfo($sanitizedName, PATHINFO_EXTENSION);
 			$sanitizedName = pathinfo($sanitizedName, PATHINFO_FILENAME) . '.' . Strings::lower($ext);
 
-			do {
-				$name = Random::generate(10) . '.' . $sanitizedName;
-				$file = $this->formatFilePath($name, $namespace);
-				$path = $this->getPath($file);
-
-			} while (file_exists($path));
-
+			$file = $this->generateFilePath($sanitizedName, $namespace);
+			$path = $this->getPath($file);
 			$image->move($path);
 			return $file;
 		}
@@ -116,15 +108,32 @@
 				throw new ImageStorageException("Unknow format '$format'.");
 			}
 
+			$sanitizedName = Random::generate(5) . '.' . $ext;
+			$file = $this->generateFilePath($sanitizedName, $namespace);
+			$path = $this->getPath($file);
+			@mkdir(dirname($path), 0777, TRUE); // @ - adresar muze existovat
+			$image->save($path, $quality, $format);
+			return $file;
+		}
+
+
+		/**
+		 * @param  string
+		 * @param  string|NULL
+		 * @return string
+		 */
+		public function generateFilePath($sanitizedName, $namespace = NULL)
+		{
+			$name = NULL;
+			$path = NULL;
+			$file = NULL;
+
 			do {
-				$name = Random::generate(10) . '.' . Random::generate(5) . '.' . $ext;
+				$name = Random::generate(10) . '.' . $sanitizedName;
 				$file = $this->formatFilePath($name, $namespace);
 				$path = $this->getPath($file);
 
 			} while (file_exists($path));
-
-			@mkdir(dirname($path), 0777, TRUE); // @ - adresar muze existovat
-			$image->save($path, $quality, $format);
 			return $file;
 		}
 
