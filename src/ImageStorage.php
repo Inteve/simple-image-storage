@@ -46,6 +46,15 @@
 
 
 		/**
+		 * @return string
+		 */
+		public function getDirectory()
+		{
+			return $this->directory;
+		}
+
+
+		/**
 		 * @param  FileUpload
 		 * @param  string|NULL
 		 * @param  array|string|NULL
