@@ -60,8 +60,7 @@ $imageStorage->delete('upload/avatar/image-name.jpg');
 
 ``` php
 <?php
-$path = $imageStorage->getPath('upload/avatar/image-name.jpg');
-// $path = '/path/to/directory/storageName/upload/avatar/image-name.jpg'
+$path = $imageStorage->getRealPath('upload/avatar/image-name.jpg');
 ```
 
 
@@ -70,7 +69,6 @@ $path = $imageStorage->getPath('upload/avatar/image-name.jpg');
 ``` php
 <?php
 $path = $imageStorage->getPublicPath('upload/avatar/image-name.jpg');
-// $path = 'http://www.example.com/storageName/upload/avatar/image-name.jpg'
 ```
 
 
@@ -80,7 +78,6 @@ $path = $imageStorage->getPublicPath('upload/avatar/image-name.jpg');
 <?php
 $path = $imageStorage->thumbnail($file, $width, $height, $flags = NULL, $quality = NULL);
 $path = $imageStorage->thumbnail('upload/avatar/image-name.jpg', 512, 256);
-// $path = 'http://www.example.com/storageName/upload/avatar/image-name.jpg'
 ```
 
 It uses `Nette\Utils\Image` by default but you can provide custom thumbnail generator in constructor:
