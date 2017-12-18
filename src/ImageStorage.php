@@ -4,6 +4,7 @@
 
 	use Nette;
 	use Nette\Http\FileUpload;
+	use Nette\Utils\Callback;
 	use Nette\Utils\FileSystem;
 	use Nette\Utils\Image;
 	use Nette\Utils\Random;
@@ -36,12 +37,16 @@
 		/** @var string|NULL */
 		private $storageName;
 
+		/** @var callback|NULL */
+		private $thumbnailGenerator;
 
-		public function __construct($directory, $publicDirectory, $storageName = NULL)
+
+		public function __construct($directory, $publicDirectory, $storageName = NULL, $thumbnailGenerator = NULL)
 		{
 			$this->directory = $this->normalizePath($directory, $storageName);
 			$this->publicDirectory = $this->normalizePath($publicDirectory, $storageName);
 			$this->storageName = $storageName;
+			$this->thumbnailGenerator = $thumbnailGenerator;
 		}
 
 
@@ -255,6 +260,11 @@
 		{
 			if (!isset($thumbnail['width']) && !isset($thumbnail['height'])) {
 				throw new ImageStorageException('Width & height missing');
+			}
+
+			if ($this->thumbnailGenerator !== NULL) {
+				Callback::invoke($this->thumbnailGenerator, $sourceImage, $outputImage, $thumbnail);
+				return;
 			}
 
 			$image = Image::fromFile($sourceImage);

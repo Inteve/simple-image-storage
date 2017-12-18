@@ -83,6 +83,25 @@ $path = $imageStorage->thumbnail('upload/avatar/image-name.jpg', 512, 256);
 // $path = 'http://www.example.com/storageName/upload/avatar/image-name.jpg'
 ```
 
+It uses `Nette\Utils\Image` by default but you can provide custom thumbnail generator in constructor:
+
+``` php
+$imageStorage = new ImageStorage(..., ..., ..., function ($sourcePath, $outputPath, array $thumbnailData) {
+	$im = new Imagick;
+	$im->readImage($sourcePath);
+	$im->crop(...);
+	$im->writeImage($outputPath);
+});
+```
+
+* `string $sourcePath` - path to original image
+* `string $outputPath` - thumbnail path
+* `array $thumbnailData`
+	* `int|NULL width` - width of thumbnail or NULL
+	* `int|NULL height` - height of thumbnail or NULL
+	* `int|NULL quality` - quality of output image or NULL
+	* `int flags` - see constants ImageStorage::SHRINK_ONLY, STRETCH, FIT, FILL & EXACT
+
 
 ### In template
 
