@@ -11,8 +11,10 @@
 	use Nette\Utils\Strings;
 
 
-	class ImageStorage extends Nette\Object
+	class ImageStorage
 	{
+		use Nette\SmartObject;
+
 		/** only shrinks images */
 		const SHRINK_ONLY = 1;
 

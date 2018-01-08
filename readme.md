@@ -12,7 +12,7 @@ Image storage for Nette.
 composer require inteve/simple-image-storage
 ```
 
-Library requires PHP 5.3.0 or later.
+Library requires PHP 5.6.0 or later.
 
 
 ## Usage
